@@ -46,9 +46,7 @@ const TaskList01 = () => {
     },
   ]);
 
-
   const updateTaskValue = (id:string) => {
-    
     const newTodos  = todos.map((ele) => {
         if(ele.id === (+id)){
           ele.status =  ele.status ? false : true
@@ -60,12 +58,8 @@ const TaskList01 = () => {
       },[]);
 
     setTodos( newTodos);
-  
-
-
   }
   useEffect(()=>{
-
     const todos_storage: string | number | undefined = JSON.stringify(todos)
       localStorage.setItem("data",  todos_storage);
   },[todos]);
@@ -103,8 +97,6 @@ const TaskList01 = () => {
                   >
                     <Checkbox
                       sx={{
-                      
-
                         "&:hover": {
                           bgcolor: "transparent",
                         },
@@ -122,12 +114,9 @@ const TaskList01 = () => {
                     <InputLabel
                     htmlFor={todo.title}
                     title={todo.title}
-                  
-                      //  name = {todo.title}
-                      id={`${todo.id}`}
+                    id={`${todo.id}`}
                       sx={{
-                    textDecoration:`${todo.status ?  'line-through':'none' }`,
-                        
+                        textDecoration:`${todo.status ?  'line-through':'none' }`,  
                         paddingLeft: 2,
                       }}
                     >
@@ -146,7 +135,6 @@ const TaskList01 = () => {
         <Table>
           <TableBody>
             <TableRow>
-              {/* <TableCell variant="context.table.footer"> */}
               <Accordion >
                 <AccordionSummary
                   component={Paper}
@@ -174,7 +162,6 @@ const TaskList01 = () => {
                   <TodoForm pull_typed_todo={handel_pull_typed_todo} />
                 </AccordionDetails>
               </Accordion>
-              {/* </TableCell> */}
             </TableRow>
           </TableBody>
         </Table>

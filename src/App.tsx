@@ -1,4 +1,3 @@
-// import { createMuiTheme, ThemeProvider} from '@material-ui/core';
 import { createMuiTheme, ThemeProvider } from '@material-ui/core';
 import React from 'react';
 import './App.css';
@@ -15,8 +14,6 @@ const theme = createMuiTheme({
 function App() {
   return (
     <ThemeProvider theme={theme}>
-
-    
     <div className="App">
     <div className="aside">
       <SideNav />

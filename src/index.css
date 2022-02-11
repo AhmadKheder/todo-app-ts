@@ -1,6 +1,5 @@
 .App {
   display: flex;
-  /* flex-direction: column; */
 }
 #root > div > div.aside > div > div > div > div {
   position: static;
@@ -15,19 +14,13 @@
   width: 100%;
 }
 .Header:first-child {
-  /* width: 1086px; */
   height: 176px;
-  /* padding-top: 400px; */
 }
 .TaskList01 {
   display: flex;
-  /* align-self: center;
-  align-items: center;
-  margin: auto; */
   width: 100%;
 }
 #root > div > div.header-body-flex.Header > div.TaskList01 > div {
-  /* border: 1px solid red; */
   box-shadow: 0 0 0 -0 rgb(0 0 0 / 20%), 0 0 0 0 rgb(0 0 0 / 14%),
     0 0 0 0 rgb(0 0 0 / 12%);
   margin: 10px auto;
