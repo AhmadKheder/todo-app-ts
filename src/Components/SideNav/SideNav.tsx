@@ -1,4 +1,4 @@
-import { makeStyles } from '@material-ui/core';
+import { makeStyles } from "@material-ui/core";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import CheckBoxSharpIcon from "@mui/icons-material/CheckBoxSharp";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
@@ -12,33 +12,32 @@ import ListItem from "@mui/material/ListItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import * as React from "react";
-import './SideNav.css';
+import "./SideNav.css";
 
-const drawerWidth:number = 280;
+const drawerWidth: number = 280;
 const useStyles = makeStyles({
   CheckBoxSharpIcon: {
-        position: "absolute",
-             width: "40px",
-            height: "40px",
-            left: "4px",
-            top: "24px",
-            color: "#FFB520",
-            borderRadius: "8px !important",
-    
+    position: "absolute",
+    width: "40px",
+    height: "40px",
+    left: "4px",
+    top: "24px",
+    color: "#FFB520",
+    borderRadius: "8px !important",
   },
-})
-const SideNav =()=>{
+});
+const SideNav = () => {
   const classes = useStyles();
 
-  const drawer : JSX.Element = (
+  const drawer: JSX.Element = (
     <div
       style={{
-        position : 'static',
+        position: "static",
       }}
     >
       <div style={{ display: "flex", justifyContent: "center" }}>
         <CheckBoxSharpIcon
-          sx={{            
+          sx={{
             position: "absolute",
             width: "40px",
             height: "40px",
@@ -47,12 +46,10 @@ const SideNav =()=>{
             color: "#FFB520",
             borderRadius: "8px !important",
           }}
-        />     
-        <h1>
-        To Do App
-        </h1>
+        />
+        <h1>To Do App</h1>
       </div>
-      
+
       <Divider />
 
       <List>
@@ -61,9 +58,9 @@ const SideNav =()=>{
           ["All Tasks", <DoneAllIcon />],
           ["To Do", <AssignmentTurnedInIcon />],
         ].map((text, index) => (
-          <ListItem      
-          button
-            key={index }
+          <ListItem
+            button
+            key={index}
             sx={{
               borderRadius: "8px",
               margin: "10px",
@@ -74,20 +71,22 @@ const SideNav =()=>{
                 margin: "10px",
                 width: "232px",
                 height: "40px",
-                color:"#ffff",
+                color: "#ffff",
                 backgroundColor: "#FFB520",
               },
             }}
           >
-            <ListItemIcon sx={{  "&:hover ,:active": {color:"#ffff"}}}>{text[1]}</ListItemIcon>
+            <ListItemIcon sx={{ "&:hover ,:active": { color: "#ffff" } }}>
+              {text[1]}
+            </ListItemIcon>
             <ListItemText primary={text[0]} />
           </ListItem>
         ))}
       </List>
     </div>
   );
-  return ( 
-    <Box sx={{ display: "flex"  }}>
+  return (
+    <Box sx={{ display: "flex" }}>
       <CssBaseline />
       <Box>
         <Drawer
@@ -107,7 +106,5 @@ const SideNav =()=>{
     </Box>
   );
 };
-
-    
 
 export default SideNav;

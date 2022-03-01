@@ -16,53 +16,45 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import { useEffect, useState } from "react";
-import TodoForm from "./TodoForm";
-interface TodoObj { id: number; title: string; date: string; status: boolean; }
+import TodoForm from "../TaskList/TodoForm";
+import { get } from "./Fetchers";
+interface TodoObj {
+  id: string;
+  title: string;
+  date: string;
+  description: string;
+  status: boolean;
+}
+
 const TaskList01 = () => {
-
-  const handel_pull_typed_todo = (data: TodoObj) =>  {
-    setTodos([...todos, data]);
-   
+  const [todos, setTodos] = useState([]);
+  const handel_pull_typed_todo = (data: TodoObj) => {
+    // setTodos([...(todos as TodoObj[]), data as TodoObj]
   };
- 
-  const [todos, setTodos] = useState([
-    {
-      id: 1,
-      title: "Take CSS Course",
-      date: "Today1",
-      status: false,
-    },
-    {
-      id: 2,
-      title: "Update all libraries",
-      date: "Today2",
-      status: false,
-    },
-    {
-      id: 3,
-      title: "Review the Code",
-      date: "Today3",
-      status: false,
-    },
-  ]);
+  const updateTaskValue = (id: string) => {
+    const newTodos: any = todos.map((ele: TodoObj) => {
+      if (ele.id === id) {
+        ele.status = ele.status ? false : true;
+        return ele;
+      } else {
+        return ele;
+      }
+    }, []);
+    setTodos(newTodos);
+  };
+  const getData = async () => {
+    await get("http://localhost:8080/todos").then((res) => {
+      console.log("res");
+      console.log(res);
+      setTodos(res as []);
+    });
+  };
 
-  const updateTaskValue = (id:string) => {
-    const newTodos  = todos.map((ele) => {
-        if(ele.id === (+id)){
-          ele.status =  ele.status ? false : true
-          return ele
-        }else{
-
-          return ele;
-        }
-      },[]);
-
-    setTodos( newTodos);
-  }
-  useEffect(()=>{
-    const todos_storage: string | number | undefined = JSON.stringify(todos)
-      localStorage.setItem("data",  todos_storage);
-  },[todos]);
+  useEffect(() => {
+    getData();
+    const todos_storage: string | number | undefined = JSON.stringify(todos);
+    localStorage.setItem("data", todos_storage);
+  }, []);
 
   return (
     <>
@@ -87,7 +79,7 @@ const TaskList01 = () => {
         <Table sx={{ minWidth: 650 }} aria-label="caption table">
           <TableHead></TableHead>
           <TableBody>
-            {todos.map((todo) => (
+            {todos.map((todo: TodoObj) => (
               <TableRow key={todo.id}>
                 <TableCell>
                   <div
@@ -105,18 +97,23 @@ const TaskList01 = () => {
                         height: "24px",
                       }}
                       name={todo.title}
-                      onChange ={(event: React.ChangeEvent<HTMLInputElement>, checked: boolean) => {
+                      onChange={(
+                        event: React.ChangeEvent<HTMLInputElement>,
+                        checked: boolean
+                      ) => {
                         updateTaskValue(event.target.id);
                       }}
-                      id={`${todo.id}` }
+                      id={`${todo.id}`}
                       value={todo.title}
                     />
                     <InputLabel
-                    htmlFor={todo.title}
-                    title={todo.title}
-                    id={`${todo.id}`}
+                      htmlFor={todo.title}
+                      title={todo.title}
+                      id={`${todo.id}`}
                       sx={{
-                        textDecoration:`${todo.status ?  'line-through':'none' }`,  
+                        textDecoration: `${
+                          todo.status ? "line-through" : "none"
+                        }`,
                         paddingLeft: 2,
                       }}
                     >
@@ -125,7 +122,7 @@ const TaskList01 = () => {
                   </div>
                 </TableCell>
                 <TableCell sx={{}} align="right">
-                  <TodayIcon  style={{fontSize:"x-sm"}} />
+                  <TodayIcon style={{ fontSize: "x-sm" }} />
                   <Typography sx={{}}>{todo.date}</Typography>
                 </TableCell>
               </TableRow>
@@ -135,7 +132,7 @@ const TaskList01 = () => {
         <Table>
           <TableBody>
             <TableRow>
-              <Accordion >
+              <Accordion>
                 <AccordionSummary
                   component={Paper}
                   expandIcon={<ExpandMoreIcon />}
@@ -158,7 +155,7 @@ const TaskList01 = () => {
                   </Button>
                 </AccordionSummary>
 
-                <AccordionDetails >
+                <AccordionDetails>
                   <TodoForm pull_typed_todo={handel_pull_typed_todo} />
                 </AccordionDetails>
               </Accordion>
