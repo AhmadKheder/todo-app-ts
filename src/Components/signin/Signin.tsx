@@ -20,13 +20,12 @@ const useStyles = makeStyles((theme) => ({
   },
   submitButton: {
     marginTop: theme.spacing(4),
-    backgroundColor: "#FFB520",
+    backgroundColor: "red",
 
     "&:hover": {
       backgroundColor: "#FFB520",
     },
   },
-
   signupContainer: {
     position: "fixed",
     top: 100,
@@ -39,23 +38,21 @@ const useStyles = makeStyles((theme) => ({
     border: "2px solid #FFB520",
     zIndex: 1,
   },
-  links: {
-    underline: "none",
-    textDecoration: "none",
-    color: "#fffff",
-  },
 }));
 
 function SignUp() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const { heading, submitButton, signupContainer, links } = useStyles();
-
+  const { heading, submitButton, signupContainer } = useStyles();
+  const token: string = JSON.stringify(localStorage.getItem("token"));
+  const logout = () => {
+    localStorage.clear();
+  };
   const onSubmit = async () => {
-    const res = await fetch("http://localhost:8080/auth/register", {
+    await fetch("http://localhost:8080/auth/login", {
       method: "POST",
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, token }),
       headers: {
         "Content-Type": "application/json",
       },
@@ -69,14 +66,12 @@ function SignUp() {
   return (
     <Container className={signupContainer} maxWidth="xs">
       <Typography className={heading} variant="h4">
-        Sign Up Form
+        Login Form
       </Typography>
       <TextField
         variant="outlined"
         margin="normal"
         label="Email"
-        // helperText={errors.email?.message}
-        // error={!!errors.email?.message}
         fullWidth
         required
         onChange={(e) => setEmail(e.target.value)}
@@ -101,7 +96,7 @@ function SignUp() {
         className={submitButton}
         onClick={() => onSubmit()}
       >
-        Sign Up
+        Log in
       </Button>
       <Button
         type="submit"
@@ -112,16 +107,26 @@ function SignUp() {
         onClick={() => onSubmit()}
       >
         <Link
-          href="Signin"
+          href="Signup"
           sx={{
             color: "#ffff",
             textDecoration: "none",
           }}
         >
-          Log in
+          Register
         </Link>
       </Button>
-      {/* <Link href="Signin">Signin</Link> */}
+      <Button
+        type="submit"
+        fullWidth
+        variant="contained"
+        color="primary"
+        className={submitButton}
+        onClick={() => logout()}
+      >
+        Log Out
+      </Button>
+      {/* <Link href="Signup">Signup</Link> */}
     </Container>
   );
 }

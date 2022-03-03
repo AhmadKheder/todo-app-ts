@@ -25,11 +25,18 @@ interface TodoObj {
   description: string;
   status: boolean;
 }
-
 const TaskList01 = () => {
-  const [todos, setTodos] = useState([]);
+  const [todos, setTodos] = useState([
+    {
+      id: "",
+      title: "",
+      date: "",
+      description: "",
+      status: true,
+    },
+  ]);
   const handel_pull_typed_todo = (data: TodoObj) => {
-    // setTodos([...(todos as TodoObj[]), data as TodoObj]
+    setTodos([...todos, data]);
   };
   const updateTaskValue = (id: string) => {
     const newTodos: any = todos.map((ele: TodoObj) => {
