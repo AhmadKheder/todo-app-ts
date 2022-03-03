@@ -26,6 +26,8 @@ interface TodoObj {
   status: boolean;
 }
 const TaskList01 = () => {
+
+
   const [todos, setTodos] = useState([
     {
       id: "",
@@ -35,9 +37,13 @@ const TaskList01 = () => {
       status: true,
     },
   ]);
+
+
   const handel_pull_typed_todo = (data: TodoObj) => {
     setTodos([...todos, data]);
   };
+
+
   const updateTaskValue = (id: string) => {
     const newTodos: any = todos.map((ele: TodoObj) => {
       if (ele.id === id) {
@@ -49,10 +55,11 @@ const TaskList01 = () => {
     }, []);
     setTodos(newTodos);
   };
+
+
   const getData = async () => {
-    await get("http://localhost:8080/todos").then((res) => {
-      console.log("res");
-      console.log(res);
+    await get("http://192.168.50.38:8080/todos").then((res) => {
+      console.log("res", res);
       setTodos(res as []);
     });
   };
@@ -61,7 +68,7 @@ const TaskList01 = () => {
     getData();
     const todos_storage: string | number | undefined = JSON.stringify(todos);
     localStorage.setItem("data", todos_storage);
-  }, []);
+  }, [todos]);
 
   return (
     <>
@@ -118,9 +125,8 @@ const TaskList01 = () => {
                       title={todo.title}
                       id={`${todo.id}`}
                       sx={{
-                        textDecoration: `${
-                          todo.status ? "line-through" : "none"
-                        }`,
+                        textDecoration: `${todo.status ? "line-through" : "none"
+                          }`,
                         paddingLeft: 2,
                       }}
                     >

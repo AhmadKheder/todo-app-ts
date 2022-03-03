@@ -3,10 +3,11 @@ import {
   Container,
   makeStyles,
   TextField,
-  Typography,
+  Typography
 } from "@material-ui/core";
 import Link from "@mui/material/Link";
 import { useState } from "react";
+import sendRequest from "../../utils/sendRequest";
 
 interface IUser {
   email: string;
@@ -46,21 +47,20 @@ function SignUp() {
 
   const { heading, submitButton, signupContainer } = useStyles();
   const token: string = JSON.stringify(localStorage.getItem("token"));
+
+
   const logout = () => {
     localStorage.clear();
   };
+
+
+  type LoginResponse = { token: string, msg: string }
+
+
   const onSubmit = async () => {
-    await fetch("http://localhost:8080/auth/login", {
-      method: "POST",
-      body: JSON.stringify({ email, password, token }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-      mode: "cors",
-    }).then(async (res) => {
-      const resJson = await res.json();
-      localStorage.setItem("token", resJson.token);
-    });
+    const res = await sendRequest<LoginResponse>({ method: 'POST', body: { email, password, token }, endPoint: 'auth/login' })
+
+    localStorage.setItem("token", res.token);
   };
 
   return (

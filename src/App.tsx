@@ -1,9 +1,12 @@
-import { createMuiTheme, ThemeProvider } from "@material-ui/core";
+import { createMuiTheme, CssBaseline, ThemeProvider } from "@material-ui/core";
 import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./App.css";
-import Header from "./Components/Header/Header";
-import SideNav from "./Components/SideNav/SideNav";
-import TaskList from "./Components/TaskList/TaskList";
+import Home from "./Pages/Home/Home";
+import Signin from "./Pages/signin/Signin";
+import SignUp from "./Pages/signup/signup";
+
+
 const theme = createMuiTheme({
   palette: {
     primary: {
@@ -11,22 +14,34 @@ const theme = createMuiTheme({
     },
   },
 });
+
+
+
 function App() {
+
+  const auth = localStorage.getItem('token') !== null
+
+
   return (
     <ThemeProvider theme={theme}>
-      <div className="App">
-        <div className="aside">
-          <SideNav />
-        </div>
-        <div className="header-body-flex Header">
-          <Header />
-          <div className="TaskList01">
-            <TaskList />
-          </div>
-        </div>
-      </div>
+
+      <CssBaseline />
+      <BrowserRouter>
+        <Routes>
+
+
+          {/* auth ? null : <Redirect from="/" to="/events" /> */}
+          <Route path="Signin" element={<Signin />} />
+          <Route path="/" element={<Home />} />
+          <Route path="signup" element={<SignUp />} />
+        </Routes>
+      </BrowserRouter>
+
+
     </ThemeProvider>
   );
 }
 
 export default App;
+
+
