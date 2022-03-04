@@ -7,6 +7,7 @@ import {
 } from "@material-ui/core";
 import Link from "@mui/material/Link";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 interface IUser {
   email: string;
@@ -47,6 +48,8 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function SignUp() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -64,6 +67,9 @@ function SignUp() {
       const resJson = await res.json();
       localStorage.setItem("token", resJson.token);
     });
+    if (localStorage.getItem("token") !== null) {
+      navigate("/");
+    }
   };
 
   return (

@@ -3,10 +3,11 @@ import {
   Container,
   makeStyles,
   TextField,
-  Typography
+  Typography,
 } from "@material-ui/core";
 import Link from "@mui/material/Link";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import sendRequest from "../../utils/sendRequest";
 
 interface IUser {
@@ -41,28 +42,37 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function SignUp() {
+function SignIn() {
+  const navigate = useNavigate();
+
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
   const { heading, submitButton, signupContainer } = useStyles();
   const token: string = JSON.stringify(localStorage.getItem("token"));
 
-
   const logout = () => {
     localStorage.clear();
   };
 
-
-  type LoginResponse = { token: string, msg: string }
-
+  type LoginResponse = { token: string; msg: string };
 
   const onSubmit = async () => {
-    const res = await sendRequest<LoginResponse>({ method: 'POST', body: { email, password, token }, endPoint: 'auth/login' })
+    const res = await sendRequest<LoginResponse>({
+      method: "POST",
+      body: { email, password, token },
+      endPoint: "auth/login",
+    });
 
     localStorage.setItem("token", res.token);
-  };
 
+    if (
+      localStorage.getItem("token") !== null &&
+      localStorage.getItem("token") !== undefined
+    ) {
+      navigate("/");
+    }
+  };
   return (
     <Container className={signupContainer} maxWidth="xs">
       <Typography className={heading} variant="h4">
@@ -131,4 +141,4 @@ function SignUp() {
   );
 }
 
-export default SignUp;
+export default SignIn;

@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/core";
+import { Button, makeStyles } from "@material-ui/core";
 import AssignmentTurnedInIcon from "@mui/icons-material/AssignmentTurnedIn";
 import CheckBoxSharpIcon from "@mui/icons-material/CheckBoxSharp";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
@@ -24,6 +24,20 @@ const useStyles = makeStyles({
     top: "24px",
     color: "#FFB520",
     borderRadius: "8px !important",
+  },
+  btn: {
+    borderRadius: "8px",
+    margin: "10px",
+    width: "232px",
+    height: "40px",
+    "&:hover ,:active": {
+      borderRadius: "8px",
+      margin: "10px",
+      width: "232px",
+      height: "40px",
+      color: "#ffff",
+      backgroundColor: "#FFB520",
+    },
   },
 });
 const SideNav = () => {
@@ -82,6 +96,28 @@ const SideNav = () => {
             <ListItemText primary={text[0]} />
           </ListItem>
         ))}
+        <ListItem
+          button
+          key={10}
+          sx={{
+            borderRadius: "8px",
+            margin: "10px",
+            width: "232px",
+            height: "40px",
+            "&:hover ,:active": {
+              borderRadius: "8px",
+              margin: "10px",
+              width: "232px",
+              height: "40px",
+              color: "#ffff",
+              backgroundColor: "#FFB520",
+            },
+          }}
+        >
+          <Button className={classes.btn} onClick={() => localStorage.clear()}>
+            Logout
+          </Button>
+        </ListItem>
       </List>
     </div>
   );

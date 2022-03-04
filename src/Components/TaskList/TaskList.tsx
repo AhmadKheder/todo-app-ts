@@ -15,9 +15,10 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
+import axios from "axios";
 import { useEffect, useState } from "react";
 import TodoForm from "../TaskList/TodoForm";
-import { get } from "./Fetchers";
+
 interface TodoObj {
   id: string;
   title: string;
@@ -25,9 +26,7 @@ interface TodoObj {
   description: string;
   status: boolean;
 }
-const TaskList01 = () => {
-
-
+export const TaskList = () => {
   const [todos, setTodos] = useState([
     {
       id: "",
@@ -38,16 +37,25 @@ const TaskList01 = () => {
     },
   ]);
 
-
-  const handel_pull_typed_todo = (data: TodoObj) => {
+  const handel_pull_typed_todo = async (data: TodoObj) => {
+    data = { ...data, description: "dumy description" };
+    await fetch(`http://localhost:8080/add-todo`, {
+      method: "POST",
+      body: JSON.stringify(data),
+      headers: {
+        "Content-Type": "application/json",
+        "user-auth-token": `${localStorage.getItem("token")}`,
+      },
+      mode: "cors",
+    });
     setTodos([...todos, data]);
   };
-
 
   const updateTaskValue = (id: string) => {
     const newTodos: any = todos.map((ele: TodoObj) => {
       if (ele.id === id) {
         ele.status = ele.status ? false : true;
+        // updateTodo(ele);
         return ele;
       } else {
         return ele;
@@ -55,21 +63,105 @@ const TaskList01 = () => {
     }, []);
     setTodos(newTodos);
   };
-
-
-  const getData = async () => {
-    await get("http://192.168.50.38:8080/todos").then((res) => {
-      console.log("res", res);
-      setTodos(res as []);
-    });
+  const updateTodo = async (todo: TodoObj) => {
+    const id = todo.id;
+    axios
+      .put(`http://localhost:8080/edit-todo/${id}`, {
+        body: { ...todo },
+        headers: {
+          "Content-Type": "application/json",
+          "user-auth-token": `${localStorage.getItem("token")}`,
+        },
+        mode: "cors",
+      })
+      .then((res) => {
+        updateTaskValue(todo.id);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
-
+  const getData = async () => {
+    axios
+      .get("http://localhost:8080/todos", {
+        headers: {
+          "user-auth-token": `${localStorage.getItem("token")}`,
+        },
+      })
+      .then((res) => {
+        setTodos(res.data.todos);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
   useEffect(() => {
     getData();
     const todos_storage: string | number | undefined = JSON.stringify(todos);
     localStorage.setItem("data", todos_storage);
-  }, [todos]);
+  }, []);
+  const localToken = localStorage.getItem("token");
+  if (localToken == undefined) {
+    localStorage.clear();
+  }
+  if (todos.length < 1) {
+    return (
+      <>
+        <TableContainer
+          sx={{ maxWidth: 1000, marginLeft: 50, marginTop: 5 }}
+          component={Paper}
+        >
+          <div
+            style={{
+              borderStyle: "none",
+              border: 0,
+              margin: 5,
+              display: "flex",
+              justifyContent: "space-between",
+            }}
+            className="titles-container"
+          >
+            <Typography>Task List</Typography>
+            <Typography>Due Date</Typography>
+          </div>
+          <h2>You have nothing todo</h2>
+          <Table>
+            <TableBody>
+              <TableRow>
+                <Accordion>
+                  <AccordionSummary
+                    component={Paper}
+                    expandIcon={<ExpandMoreIcon />}
+                    aria-controls="panel1a-content"
+                    id="panel1a-header"
+                  >
+                    <Button
+                      sx={{
+                        left: 22,
+                        height: 77,
+                        color: "#555B77",
+                        backgroundColor: "#FFFFFF",
+                        "&:hover": {
+                          background: "#FFFFFF",
+                        },
+                      }}
+                      startIcon={<AddIcon />}
+                    >
+                      New Task
+                    </Button>
+                  </AccordionSummary>
 
+                  <AccordionDetails>
+                    <TodoForm pull_typed_todo={handel_pull_typed_todo} />
+                  </AccordionDetails>
+                </Accordion>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </TableContainer>
+      </>
+    );
+  }
   return (
     <>
       <TableContainer
@@ -111,6 +203,7 @@ const TaskList01 = () => {
                         height: "24px",
                       }}
                       name={todo.title}
+                      onClick={() => updateTodo(todo)}
                       onChange={(
                         event: React.ChangeEvent<HTMLInputElement>,
                         checked: boolean
@@ -125,8 +218,9 @@ const TaskList01 = () => {
                       title={todo.title}
                       id={`${todo.id}`}
                       sx={{
-                        textDecoration: `${todo.status ? "line-through" : "none"
-                          }`,
+                        textDecoration: `${
+                          todo.status ? "line-through" : "none"
+                        }`,
                         paddingLeft: 2,
                       }}
                     >
@@ -180,4 +274,4 @@ const TaskList01 = () => {
   );
 };
 
-export default TaskList01;
+export default TaskList;
