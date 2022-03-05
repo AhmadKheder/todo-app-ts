@@ -1,4 +1,5 @@
 #root > div > div.aside > div > div > div > div {
   position: static;
   width: 280px;
+  height: 100vh;
 }

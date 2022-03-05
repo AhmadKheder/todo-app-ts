@@ -124,7 +124,7 @@ export const TaskList = () => {
             <Typography>Task List</Typography>
             <Typography>Due Date</Typography>
           </div>
-          <h2>You have nothing todo</h2>
+          <h2>You have nothing to do</h2>
           <Table>
             <TableBody>
               <TableRow>

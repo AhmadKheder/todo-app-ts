@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   submitButton: {
     marginTop: theme.spacing(4),
-    backgroundColor: "red",
+    backgroundColor: "#FFB520",
 
     "&:hover": {
       backgroundColor: "#FFB520",
@@ -126,7 +126,7 @@ function SignIn() {
           Register
         </Link>
       </Button>
-      <Button
+      {/* <Button
         type="submit"
         fullWidth
         variant="contained"
@@ -135,7 +135,7 @@ function SignIn() {
         onClick={() => logout()}
       >
         Log Out
-      </Button>
+      </Button> */}
       {/* <Link href="Signup">Signup</Link> */}
     </Container>
   );
